@@ -40,36 +40,36 @@ export default {
       menu: {
         'menu_1' : {
           icon: 'icon-fengche',
-          title: '框架',
+          title: '菜单',
           pageName: 'Framework',
           params: {
             // test: 'hello'
           },
         },
-        'menu_2' : {
-          icon: 'icon-niudan',
-          title: '系统',
-          pageName: 'Os',
-          params: {},
-        },
-        'menu_3' : {
-          icon: 'icon-xiangji',
-          title: '硬件',
-          pageName: 'Hardware',
-          params: {},
-        },
-        'menu_4' : {
-          icon: 'icon-liuxing',
-          title: '特效',
-          pageName: 'Effect',
-          params: {},
-        },   
-        'menu_5' : {
-          icon: 'icon-gouwu',
-          title: 'cross',
-          pageName: 'Cross',
-          params: {},
-        },          
+        // 'menu_2' : {
+        //   icon: 'icon-niudan',
+        //   title: '系统',
+        //   pageName: 'Os',
+        //   params: {},
+        // },
+        // 'menu_3' : {
+        //   icon: 'icon-xiangji',
+        //   title: '硬件',
+        //   pageName: 'Hardware',
+        //   params: {},
+        // },
+        // 'menu_4' : {
+        //   icon: 'icon-liuxing',
+        //   title: '特效',
+        //   pageName: 'Effect',
+        //   params: {},
+        // },   
+        // 'menu_5' : {
+        //   icon: 'icon-gouwu',
+        //   title: 'cross',
+        //   pageName: 'Cross',
+        //   params: {},
+        // },          
       }
     };
   },

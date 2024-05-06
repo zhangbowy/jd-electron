@@ -35,7 +35,7 @@ export default {
       views: [
         {
           type: 'web',
-          content: 'https://www.baidu.com/'
+          content: 'https://passport.shop.jd.com/login/index.action'
         },
         {
           type: 'html',

@@ -24,7 +24,7 @@ export default {
   methods: {
     loginWindow () {
       this.$router.push({ name: 'SpecialLoginWindow', params: {}});
-      ipc.invoke(ipcApiRoute.loginWindow, {width: 400, height: 300}).then(r => {      
+      ipc.invoke(ipcApiRoute.loginWindow, {width: 800, height: 600}).then(r => {      
         // 
       })
     },

@@ -1,7 +1,7 @@
 {
-  "productName": "ee",
-  "appId": "com.electron.ee",
-  "copyright": "© 2023 哆啦好梦 Technology Co., Ltd.",
+  "productName": "jd_relation_tool",
+  "appId": "com.electron.jd.relation",
+  "copyright": "© 2023 杭州咩有网络科技公司 Co., Ltd.",
   "directories": {
     "output": "out"
   },
@@ -28,7 +28,7 @@
     "installerHeaderIcon": "build/icons/icon.ico",
     "createDesktopShortcut": true,
     "createStartMenuShortcut": true,
-    "shortcutName": "EE框架"
+    "shortcutName": "jd_relation"
   },
   "mac": {
     "icon": "build/icons/icon.icns",

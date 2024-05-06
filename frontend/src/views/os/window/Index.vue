@@ -2,34 +2,36 @@
   <div id="app-base-window">
     <div class="one-block-1">
       <span>
-        1. 新窗口中加载web内容
+       京东备案自动关联
       </span>
     </div>  
     <div class="one-block-2">
       <a-space>
-        <a-button @click="createWindow(0)">打开哔哩哔哩</a-button>
+        <span>{{shopInfo.name}}</span>
+        <a-tag>{{isLogin? '已登录' : '未登录'}}</a-tag>
+        <a-button @click="createWindow(0)">登录商家后台</a-button>
       </a-space>
     </div>
-    <div class="one-block-1">
-      <span>
-        2. 新窗口中加载html内容
-      </span>
-    </div>  
-    <div class="one-block-2">
-      <a-space>
-        <a-button @click="createWindow(1)">打开html页面</a-button>
-      </a-space>
-    </div>
-    <div class="one-block-1">
-      <span>
-        3. 新窗口中加载当前项目页面
-      </span>
-    </div>  
-    <div class="one-block-2">
-      <a-space>
-        <a-button @click="createWindow(2)">打开vue页面</a-button>
-      </a-space>
-    </div>    
+    <!-- <div class="one-block-1">
+    //   <span>
+    //     2. 新窗口中加载html内容
+    //   </span>
+    // </div>  
+    // <div class="one-block-2">
+    //   <a-space>
+    //     <a-button @click="createWindow(1)">打开html页面</a-button>
+    //   </a-space>
+    // </div>
+    // <div class="one-block-1">
+    //   <span>
+    //     3. 新窗口中加载当前项目页面
+    //   </span>
+    // </div>  
+    // <div class="one-block-2">
+    //   <a-space>
+    //     <a-button @click="createWindow(2)">打开vue页面</a-button>
+    //   </a-space>
+    // </div>     -->
   </div>
 </template>
 <script>
@@ -40,12 +42,14 @@ import { toRaw } from 'vue';
 export default {
   data() {
     return {
+      shopInfo: {},
+      isLogin: false,
       views: [
         {
           type: 'web',
-          content: 'https://www.bilibili.com/',
+          content: 'https://porder.shop.jd.com/order/orderlist/allOrders?t=1714983558569',
           windowName: 'window-web',
-          windowTitle: 'bilibili'
+          windowTitle: '京东商家后台'
         },
         {
           type: 'html',
@@ -68,6 +72,22 @@ export default {
         console.log(r);
       })
     },
+    getShopInfo() {
+      ipc.invoke('controller.os.getShopInfo').then(r => {
+        console.log(r)
+        this.shopInfo = r;
+      })
+    }
+  },
+  created() {
+    setInterval(() => {
+      ipc.invoke('controller.os.checkLogin').then(r => {
+        this.isLogin = !!r;
+      })
+      this.getShopInfo()
+    }, 5000);
+
+    
   }
 };
 </script>
