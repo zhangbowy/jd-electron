@@ -1,6 +1,8 @@
 <template>
   <div id="effect-login-window">
     <div class="block-1">
+      <a-input></a-input>
+      <a-input></a-input>
       <a v-if="!loading" @click="login">
         <a-button type="primary">
           登录

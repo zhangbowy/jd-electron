@@ -1,34 +1,33 @@
 <template>
   <div id="app-base-screen">
-    <div class="one-block-1">
-      <span>
-        1. 系统主题模式
-      </span>
-    </div>
-    <div class="one-block-2">
-      <a-space>
-        <a-button @click="getTheme()">获取模式</a-button>
-      </a-space>
-      <span>
-        结果：{{ currentThemeMode }}
-      </span>
-    </div>
-    <div class="one-block-1">
-      2. 设置主题模式（请自行实现前端UI效果）
-    </div>  
-    <div class="one-block-2">
-      <a-radio-group v-model="currentThemeMode" @change="setTheme">
-        <a-radio :value="themeList[0]">
-          {{ themeList[0] }}
-        </a-radio>
-        <a-radio :value="themeList[1]">
-          {{ themeList[1] }}
-        </a-radio>
-        <a-radio :value="themeList[2]">
-          {{ themeList[2] }}
-        </a-radio>
-      </a-radio-group>
-    </div>
+    <a-form :moda="form" laba-position="top">
+          <a-form-item :label="'商品链接'">
+            <a-row>
+              <a-col v-for="(item,index) in form.urlList" :key="index" :span="24">
+                <a-input v-model="item.url" size="small" placeholder="" style="width: 50%">
+                  <template slot="prepend">{{ `1` }}</template>
+                </a-input>
+                <a-button
+                  v-if="index !== form.urlList.length - 1"
+                  size="small"
+                  type="danger"
+                  style="vertical-align: top;margin: 0"
+                  @click="deleteTemplate(index)"
+                >{{ '删除' }}</a-button>
+                <a-button
+                  v-if="index === form.urlList.length - 1"
+                  size="small"
+                  style="vertical-align: top;"
+                  @click="addTemplate()"
+                >{{ '添加' }}</a-button>
+              </a-col>
+            </a-row>
+          </a-form-item>
+          <a-form-item>
+            <a-button size="small" @click="importGoods">{{ '导入商品' }}</a-button>
+          </a-form-item>
+        </a-form>
+
   </div>
 </template>
 <script>
@@ -39,16 +38,34 @@ export default {
   data() {
     return {
       currentThemeMode: '',
-      themeList: [
+      themaist: [
         'system',
         'light',
         'dark'
-      ]
+      ],
+      form: {
+        urlList: [{
+          url: '2222'
+        }]
+      },
     };
   },
   mounted () {
   },
   methods: {
+    deleteTemplate(index) {
+      this.form.urlList.splice(index, 1)
+    },
+    addTemplate() {
+      if (!this.form.urlList[this.form.urlList.length - 1].url) {
+        // this.$message(`'请输入商品链接'`)
+        return
+      }
+      this.form.urlList.push({
+        url: ''
+      })
+    },
+    importGoods() {},
     setTheme (e) {
       this.currentThemeMode = e.target.value;
       console.log('setTheme currentThemeMode:', this.currentThemeMode)

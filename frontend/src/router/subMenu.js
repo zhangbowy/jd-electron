@@ -77,21 +77,21 @@ export default {
 		// 	pageName: 'OsWindowViewIndex',
 		// 	params: {}
 		// },
-		'menu_100' : {
+		'menu_99' : {
 			icon: 'profile',
-			title: '窗口',
+			title: '关联备案',
 			pageName: 'OsWindowIndex',
 			params: {}
 		},
-		// 'menu_103' : {
-		// 	icon: 'profile',
-		// 	title: '桌面通知',
-		// 	pageName: 'OsNotificationIndex',
-		// 	params: {}
-		// },
+		'menu_103' : {
+			icon: 'profile',
+			title: '可用UPC池',
+			pageName: 'OsNotificationIndex',
+			params: {}
+		},
 		// 'menu_104' : {
 		// 	icon: 'profile',
-		// 	title: '电源监控',
+		// 	title: '查询商品备案情况',
 		// 	pageName: 'OsPowerMonitorIndex',
 		// 	params: {}
 		// },

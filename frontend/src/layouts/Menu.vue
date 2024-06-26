@@ -52,14 +52,14 @@ export default {
     return {
       menu:{},
       //selectedKeys: ['menu_100'],
-      current: 'menu_100',
+      current: 'menu_99',
       keys: []
     };
   },
   watch: {
     id: function () {
       console.log('watch id ----- ', this.id);
-      this.current = 'menu_100';
+      this.current = 'menu_99';
       this.menuHandle();
     },
   },

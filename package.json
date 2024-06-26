@@ -1,7 +1,7 @@
 {
   "name": "jd_relation",
-  "version": "3.12.0",
-  "description": "A fast, desktop software development framework",
+  "version": "1.0.1",
+  "description": "好用的京东插件",
   "main": "main.js",
   "scripts": {
     "dev": "ee-bin dev",

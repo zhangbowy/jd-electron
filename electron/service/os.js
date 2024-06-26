@@ -1,6 +1,6 @@
 'use strict';
 
-const { Service } = require('ee-core');
+const { Service, Storage } = require('ee-core');
 const { BrowserView, Notification } = require('electron');
 const CoreWindow = require('ee-core/electron/window');
 
@@ -14,6 +14,8 @@ class OsService extends Service {
     super(ctx);
     this.myBrowserView = null;
     this.myNotification = null;
+
+    this.jdb = Storage.connection('demo');
   }
 
   /**
