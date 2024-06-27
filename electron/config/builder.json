@@ -1,7 +1,7 @@
 {
-  "productName": "jd_relation_tool",
-  "appId": "com.electron.jd.relation",
-  "copyright": "© 2023 杭州咩有网络科技公司 Co., Ltd.",
+  "productName": "dewu_product_tool",
+  "appId": "com.electron.dewu_product_tools",
+  "copyright": "© 2023 bo Co., Ltd.",
   "directories": {
     "output": "out"
   },
@@ -28,7 +28,7 @@
     "installerHeaderIcon": "build/icons/icon.ico",
     "createDesktopShortcut": true,
     "createStartMenuShortcut": true,
-    "shortcutName": "jd_relation"
+    "shortcutName": "dewu_product_tool"
   },
   "mac": {
     "icon": "build/icons/icon.icns",

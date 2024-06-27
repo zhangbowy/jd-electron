@@ -29,7 +29,7 @@ class OsController extends Controller {
 
     this.jdb = Storage.connection('demo');
     // setInterval(() => {
-      this.getDewu()
+    //   this.getDewu()
     // }, 100)
     // console.log(this.checkLogin(), 'this.checkLogin()')
 
@@ -199,26 +199,55 @@ class OsController extends Controller {
     // 或者根据需求进行其他操作
   };
 
+  async getMsCookie() {
+    const cookies = await session.defaultSession.cookies.get({});
+    const newArr = cookies.filter(item => item.domain == '.plds.szchengji-inc.com').map((c) => {
+      return `${c.name}=${c.value}`
+    })
+    return newArr.join(';')
+  };
+
+
+
   async getThread() {
     return this.jdb.getItem('thread') || 0
   }
 
-  async getDewu() {
+
+  async queryDwData(urlList) {
+    const dataList = await Promise.all(urlList.map((item) => this.getmsData(item)))
+    return dataList
+  }
+
+
+  async getmsData(url) {
+    const dwData = await this.getDewu(url)
+    return await this.dealDwuData(dwData)
+  }
+
+  async getDewu(url, query) {
     try {
     const p = {
-      "spuId":1003735,
+      // "spuId":1003735,
       "propertyValueId":0,
       "sourceName":"h5",
-      "skuId":602234780,
+      // "skuId":602234780,
       "abTests":[{"name":"newsr","value":"2"},{"name":"5.16_certificate","value":"1"}],"extDatas":[{"name":"CUSTOM_RECOMMEND_SWITCH","value":"0"}]}
 
-      const targetPrams = await this.getDewuSpuByUrl('https://dw4.co/t/A/1oggWBQoT');
+      if (query) {
+        p.spuId = query.spuId
+        p.skuId = query.skuId
+      } else {
+        const targetPrams = await this.getDewuSpuByUrl(url);
 
-      p.spuId = targetPrams.spuId
-      p.skuId = targetPrams.skuId
+        p.spuId = Number(targetPrams.spuId)
+        p.skuId = Number(targetPrams.skuId)
+        // console.log(p)
+
+      }
+
 
       const sign = getSign(p)
-      // console.log(sign, 'SIGNSIGNSIGNSIGNSIGNSIGNSIGNSIGNSIGNSIGNSIGNSIGNSIGNSIGNSIGN')
 
       p.sign = sign;
 
@@ -251,11 +280,11 @@ class OsController extends Controller {
       });
 
       if (res.data.code === 200) {
-        console.log(res.data);
+        // console.log(res.data);
       }
-      return true
+      return res.data.data
     } catch (e) {
-      console.log('findStopOrder', '---')
+      console.log('dw',e)
 
     }
   }
@@ -296,6 +325,107 @@ class OsController extends Controller {
     const data = getParams(targetUrl)
     return data
     console.log(data)
+  }
+
+
+  async dealDwuData(data) {
+    const {
+      saleProperties,
+      baseProperties,
+      image = {},
+      spuGroupList,
+      detail,
+      spuShowSpread,
+      imageAndText,
+        skus
+    } = data
+
+    const imageList = image.spuImage.images.map(item => item.url)
+    const showData = imageAndText.find(item =>item.contentType == 'SHOW')
+    const descImages = showData ? showData.images : []
+    const basePropertiesObj = {}
+    baseProperties.list.forEach(item => {
+      basePropertiesObj[item.key] = item.value
+    })
+
+    const skuData = {
+
+    }
+
+    const hasLevel2 = saleProperties.list.find(item => item.levlel === 2)
+    for(const skuItem of  saleProperties.list) {
+      for(const skuItemSub of  saleProperties.list) {
+          if(skuItem.level != skuItemSub.level && skuItem.level <  skuItemSub.level) {
+            skuData[skuItem.propertyValueId + ":" + skuItemSub.propertyValueId] = [
+              skuItem,
+              skuItemSub
+            ]
+          } else {
+            if(!hasLevel2) {
+              skuData[skuItem.propertyValueId] = [
+                skuItem,
+              ]
+            }
+          }
+      }
+    }
+    // const levle1 = saleProperties.list.filter()
+
+    let list = Object.values(skuData);
+    const _skuName = skus.map(item => {
+      return item.properties.map(v => {
+        const item = saleProperties.list.find(j => j.propertyValueId === v.propertyValueId)
+        return item.value
+      }).join(';')
+    }).join('|')
+    const _skuStock = skus.map(item => 100).join('|')
+    const _skuData = skus.map(item => {
+      return item.skuId
+    }).join('|')
+    const _skuImage = skus.map(item => {
+      return item.logoUrl
+    }).join('|')
+
+    const skuPriceOriginData = await Promise.all(skus.map(item =>  this.getDewu('', {
+      skuId: item.skuId,
+      spuId: item.spuId,
+    })))
+    const skuPriceList = skuPriceOriginData.map(c => c.item ? Math.floor(c.item.price / 100) : 100)
+    const _skuPrice = skuPriceList.join("|")
+
+    const main = {
+      "商品ID": detail.spuId,
+      "商品名称": detail.title,
+      "商品链接": '',
+      "分类": '',
+      "库存": 100,
+      "团购价格": skuPriceList[0],
+      "单买价格": skuPriceList[0],
+      "商品主图": imageList.join(','),
+      "商品轮播图": imageList.join(','),
+      // "商品详情图": descImages.length ? descImages.map(item => item.url.replaceAll(',', '%2C')).join(',') : '',
+      "商品详情图": descImages.length ? descImages.map(item => item.url).join(',') : '',
+      // "商品描述": "",
+      // "商品视频": "",
+      "商品属性": JSON.stringify(basePropertiesObj),
+      "SKUID": _skuData,
+      "SKU名称": _skuName,
+      "SKU库存": _skuStock,
+      "SKU团购价格": _skuPrice,
+      "SKU单买价格": _skuPrice,
+      "SKU预览图": _skuImage,
+      // skuData,
+      // saleProperties,
+      // baseProperties,
+      // image,
+      // spuGroupList,
+      // detail,
+      // spuShowSpread,
+
+      // data,
+      // skuPriceList
+    }
+    return main
   }
 
   async checkLogin(thread = 0) {
@@ -458,7 +588,7 @@ class OsController extends Controller {
   //   const extensionDir = path.join(chromeExtensionDir, extensionId);
 
   //   Log.info("[api] [example] [loadExtension] extension id:", extensionId);
-  //   unzip(crxFile, extensionDir).then(() => {    
+  //   unzip(crxFile, extensionDir).then(() => {
   //     Log.info("[api] [example] [loadExtension] unzip success!");
   //     chromeExtension.load(extensionId);
   //   });
