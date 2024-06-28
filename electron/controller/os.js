@@ -215,8 +215,21 @@ class OsController extends Controller {
 
 
   async queryDwData(urlList) {
-    const dataList = await Promise.all(urlList.map((item) => this.getmsData(item)))
+
+    const dataList = await Promise.all(urlList.map(async (item, index) => {
+      await this.sleep(2000 * (index + 1))
+      const res = await this.getmsData(item)
+      return res
+    }))
     return dataList
+  }
+
+  sleep(ms) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve('完成');
+      }, ms);
+    })
   }
 
 

@@ -27,7 +27,7 @@ export default {
     login() {
       this.loading = true;
       setTimeout(() => {
-        this.$router.push({ name: 'Framework', params: {}});
+        this.$router.push({ name: 'OsWindowViewIndex', params: {}});
         ipc.invoke(ipcApiRoute.restoreWindow, {width: 980, height: 650}).then(r => {      
           // 
         })

@@ -9,7 +9,7 @@
 
     </div>
     <a-spin :spinning="spinning" >
-      <div style="height: 85vh; overflow: auto">
+      <div style="height: 80vh; overflow: auto">
 
 
         <a-form :moda="form" laba-position="top">
@@ -50,9 +50,7 @@
             </a-row>
           </a-form-item>
           <span v-if="form.urlList.length">共 {{form.urlList.length}}条链接</span>
-          <div v-if="dwData">
-            已抓取成功 {{dwData.length}} 条数据, 耗时 {{execTime}}s
-          </div>
+
         </a-form>
 
         <div style="width: 100%; padding: 20px 0 20px 40px; background: #fff;position: fixed; bottom: 0; ">
@@ -61,6 +59,9 @@
           </a-button>
           <a-button @click="importGoods" type="primary" style="margin-right: 8px">{{ '抓取数据' }}</a-button>
           <a-button @click="uploadMs">{{ '上传妙手' }}</a-button>
+          <div style="display: inline-flex; margin-left: 8px; color: red" v-if="dwData">
+            已抓取成功 {{dwData.length}} 条数据, 耗时 {{execTime}}s
+          </div>
         </div>
       </div>
     </a-spin>
@@ -167,7 +168,7 @@ export default {
       })
     },
     importGoods() {
-      const urlList = this.form.urlList.filter(item => item.url).map(({url}) => url)
+      const urlList = this.form.urlList.filter(item => item.url).map(({url}) => url.trim())
       if (urlList.length === 0) {
         message.error('至少输入一条链接吧哥');
         return

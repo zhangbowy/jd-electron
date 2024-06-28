@@ -4,9 +4,9 @@
       theme="light"
       class="layout-sider"
     >
-      <a-menu 
-        theme="light" 
-        mode="inline" 
+      <a-menu
+        theme="light"
+        mode="inline"
         :selectedKeys="[current]"
         @click="changeMenu">
         <a-menu-item v-for="(menuInfo, subIndex) in menu" :key="subIndex">
@@ -18,13 +18,15 @@
     </a-layout-sider>
     <a-layout>
       <a-layout-content>
+        <keep-alive>
         <router-view />
+        </keep-alive>
       </a-layout-content>
     </a-layout>
   </a-layout>
 </template>
 <script>
-// import { reactive } from 'vue'; 
+// import { reactive } from 'vue';
 import subMenu from '@/router/subMenu';
 
 export default {
@@ -32,7 +34,7 @@ export default {
   //   const state = reactive({
   //     selectedKeys: ['menu_100'],
   //   });
-    
+
   //   const handleClick = e => {
   //     state.selectedKeys = [e.key];
   //   };
@@ -72,7 +74,7 @@ export default {
     menuHandle () {
       // 该组件优先被加载了，所以没拿到参数
       //console.log('params:', this.$route);
-    
+
       console.log('menu ------ id:', this.id);
       this.menu = subMenu[this.id];
       const linkInfo = this.menu[this.current];
